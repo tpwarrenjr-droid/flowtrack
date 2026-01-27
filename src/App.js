@@ -3,6 +3,7 @@ import { DollarSign, Plus, Trash2, Check, Calendar, Wallet } from 'lucide-react'
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase/config';
 import Auth from './components/Auth';
+import { firestoreStorage } from './utils/firestoreStorage';
 
 function CashflowTracker({ userId }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -45,157 +46,82 @@ function CashflowTracker({ userId }) {
   };
 
   // Load data on mount
-  useEffect(() => {
-    const loadData = async () => {
-      setIsLoading(true);
-      try {
-        const [accountsData, expensesData, incomeData, recurringExpData, recurringIncData] = await Promise.all([
-          window.storage.get('cashflow-accounts').catch(() => null),
-          window.storage.get('cashflow-expenses').catch(() => null),
-          window.storage.get('cashflow-income').catch(() => null),
-          window.storage.get('cashflow-recurring-expenses').catch(() => null),
-          window.storage.get('cashflow-recurring-income').catch(() => null)
-        ]);
+useEffect(() => {
+  const loadData = async () => {
+    if (!userId) return;
+    
+    setIsLoading(true);
+    try {
+      const accountsData = await firestoreStorage.get(userId, 'cashflow-accounts');
+      const expensesData = await firestoreStorage.get(userId, 'cashflow-expenses');
+      const incomeData = await firestoreStorage.get(userId, 'cashflow-income');
+      const recurringExpData = await firestoreStorage.get(userId, 'cashflow-recurring-expenses');
+      const recurringIncData = await firestoreStorage.get(userId, 'cashflow-recurring-income');
 
-        if (accountsData?.value) {
-          setAccounts(JSON.parse(accountsData.value));
-        } else {
-          // Set default data for first-time users
-          setAccounts([{ id: 1, name: 'Checking Account', balance: 5000, date: '2026-01-23' }]);
-        }
-
-        if (expensesData?.value) {
-          setExpenses(JSON.parse(expensesData.value));
-        } else {
-          setExpenses([{ id: 1, name: 'Rent', amount: 1500, dateDue: '2026-02-01', payments: [], isProjected: false, recurringId: null, isRecurringInstance: false }]);
-        }
-
-        if (incomeData?.value) {
-          setIncome(JSON.parse(incomeData.value));
-        } else {
-          setIncome([{ id: 1, name: 'Salary', amount: 4000, dateExpected: '2026-02-01', accountId: 1, recurringId: null, isRecurringInstance: false }]);
-        }
-
-        if (recurringExpData?.value) {
-          setRecurringExpenses(JSON.parse(recurringExpData.value));
-        } else {
-          setRecurringExpenses([{ id: 1, name: 'Internet Bill', amount: 80, frequency: 'monthly', startDate: '2026-01-15', isProjected: false, isActive: true }]);
-        }
-
-        if (recurringIncData?.value) {
-          setRecurringIncome(JSON.parse(recurringIncData.value));
-        } else {
-          setRecurringIncome([{ id: 1, name: 'Paycheck', amount: 2000, frequency: 'biweekly', startDate: '2026-01-15', accountId: 1, isActive: true }]);
-        }
-      } catch (error) {
-        console.error('Error loading data:', error);
-        // Set default data on error
+      if (accountsData?.value) {
+        setAccounts(JSON.parse(accountsData.value));
+      } else {
         setAccounts([{ id: 1, name: 'Checking Account', balance: 5000, date: '2026-01-23' }]);
-        setExpenses([{ id: 1, name: 'Rent', amount: 1500, dateDue: '2026-02-01', payments: [], isProjected: false, recurringId: null, isRecurringInstance: false }]);
-        setIncome([{ id: 1, name: 'Salary', amount: 4000, dateExpected: '2026-02-01', accountId: 1, recurringId: null, isRecurringInstance: false }]);
-        setRecurringExpenses([{ id: 1, name: 'Internet Bill', amount: 80, frequency: 'monthly', startDate: '2026-01-15', isProjected: false, isActive: true }]);
-        setRecurringIncome([{ id: 1, name: 'Paycheck', amount: 2000, frequency: 'biweekly', startDate: '2026-01-15', accountId: 1, isActive: true }]);
-      } finally {
-        setIsLoading(false);
       }
-    };
-    loadData();
-  }, []);
+
+      if (expensesData?.value) {
+        setExpenses(JSON.parse(expensesData.value));
+      } else {
+        setExpenses([{ id: 1, name: 'Rent', amount: 1500, dateDue: '2026-02-01', payments: [], isProjected: false, recurringId: null, isRecurringInstance: false }]);
+      }
+
+      if (incomeData?.value) {
+        setIncome(JSON.parse(incomeData.value));
+      } else {
+        setIncome([{ id: 1, name: 'Salary', amount: 4000, dateExpected: '2026-02-01', accountId: 1, recurringId: null, isRecurringInstance: false }]);
+      }
+
+      if (recurringExpData?.value) {
+        setRecurringExpenses(JSON.parse(recurringExpData.value));
+      } else {
+        setRecurringExpenses([{ id: 1, name: 'Internet Bill', amount: 80, frequency: 'monthly', startDate: '2026-01-15', isProjected: false, isActive: true }]);
+      }
+
+      if (recurringIncData?.value) {
+        setRecurringIncome(JSON.parse(recurringIncData.value));
+      } else {
+        setRecurringIncome([{ id: 1, name: 'Paycheck', amount: 2000, frequency: 'biweekly', startDate: '2026-01-15', accountId: 1, isActive: true }]);
+      }
+    } catch (error) {
+      console.error('Error loading data:', error);
+      setAccounts([{ id: 1, name: 'Checking Account', balance: 5000, date: '2026-01-23' }]);
+      setExpenses([{ id: 1, name: 'Rent', amount: 1500, dateDue: '2026-02-01', payments: [], isProjected: false, recurringId: null, isRecurringInstance: false }]);
+      setIncome([{ id: 1, name: 'Salary', amount: 4000, dateExpected: '2026-02-01', accountId: 1, recurringId: null, isRecurringInstance: false }]);
+      setRecurringExpenses([{ id: 1, name: 'Internet Bill', amount: 80, frequency: 'monthly', startDate: '2026-01-15', isProjected: false, isActive: true }]);
+      setRecurringIncome([{ id: 1, name: 'Paycheck', amount: 2000, frequency: 'biweekly', startDate: '2026-01-15', accountId: 1, isActive: true }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  loadData();
+}, [userId]);
 
   // Save data whenever it changes
-  useEffect(() => {
-    if (!isLoading && accounts.length > 0) {
-      const saveData = async () => {
-        try {
-          await Promise.all([
-            window.storage.set('cashflow-accounts', JSON.stringify(accounts)),
-            window.storage.set('cashflow-expenses', JSON.stringify(expenses)),
-            window.storage.set('cashflow-income', JSON.stringify(income)),
-            window.storage.set('cashflow-recurring-expenses', JSON.stringify(recurringExpenses)),
-            window.storage.set('cashflow-recurring-income', JSON.stringify(recurringIncome))
-          ]);
-          setLastSaved(new Date());
-        } catch (error) {
-          console.error('Error saving data:', error);
-        }
-      };
-      saveData();
-    }
-  }, [accounts, expenses, income, recurringExpenses, recurringIncome, isLoading]);
+useEffect(() => {
+  if (!isLoading && accounts.length > 0 && userId) {
+    const saveData = async () => {
+      try {
+        await firestoreStorage.set(userId, 'cashflow-accounts', JSON.stringify(accounts));
+        await firestoreStorage.set(userId, 'cashflow-expenses', JSON.stringify(expenses));
+        await firestoreStorage.set(userId, 'cashflow-income', JSON.stringify(income));
+        await firestoreStorage.set(userId, 'cashflow-recurring-expenses', JSON.stringify(recurringExpenses));
+        await firestoreStorage.set(userId, 'cashflow-recurring-income', JSON.stringify(recurringIncome));
+        setLastSaved(new Date());
+      } catch (error) {
+        console.error('Error saving data:', error);
+      }
+    };
+    saveData();
+  }
+}, [accounts, expenses, income, recurringExpenses, recurringIncome, isLoading, userId]);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  };
-
-  const exportData = () => {
-    const data = {
-      accounts,
-      expenses,
-      income,
-      recurringExpenses,
-      recurringIncome,
-      exportDate: new Date().toISOString()
-    };
-    
-    const dataStr = JSON.stringify(data, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `cashflow-backup-${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
-
-  const importData = (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const data = JSON.parse(e.target.result);
-        
-        if (data.accounts) setAccounts(data.accounts);
-        if (data.expenses) setExpenses(data.expenses);
-        if (data.income) setIncome(data.income);
-        if (data.recurringExpenses) setRecurringExpenses(data.recurringExpenses);
-        if (data.recurringIncome) setRecurringIncome(data.recurringIncome);
-        
-        alert('Data imported successfully!');
-      } catch (error) {
-        console.error('Error importing data:', error);
-        alert('Error importing data. Please make sure the file is valid.');
-      }
-    };
-    reader.readAsText(file);
-    event.target.value = '';
-  };
-
-  const clearAllData = async () => {
-    if (window.confirm('Are you sure you want to clear all data? This cannot be undone. Consider exporting your data first.')) {
-      try {
-        await Promise.all([
-          window.storage.delete('cashflow-accounts'),
-          window.storage.delete('cashflow-expenses'),
-          window.storage.delete('cashflow-income'),
-          window.storage.delete('cashflow-recurring-expenses'),
-          window.storage.delete('cashflow-recurring-income')
-        ]);
-        
-        setAccounts([{ id: Date.now(), name: 'Checking Account', balance: 0, date: new Date().toISOString().split('T')[0] }]);
-        setExpenses([]);
-        setIncome([]);
-        setRecurringExpenses([]);
-        setRecurringIncome([]);
-        alert('All data cleared successfully!');
-      } catch (error) {
-        console.error('Error clearing data:', error);
-        alert('Error clearing data. Please try again.');
-      }
-    }
   };
 
   const generateRecurringInstances = useMemo(() => {
@@ -561,31 +487,6 @@ function CashflowTracker({ userId }) {
                     </p>
                   )}
                 </div>
-              </div>
-              <div className="flex gap-3">
-                <button
-                  onClick={exportData}
-                  className="bg-slate-800/50 hover:bg-slate-700/50 text-blue-100 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all backdrop-blur-sm border border-slate-700 hover:border-blue-500/50 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20"
-                  title="Download backup"
-                >
-                  Export
-                </button>
-                <label className="bg-slate-800/50 hover:bg-slate-700/50 text-blue-100 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer backdrop-blur-sm border border-slate-700 hover:border-blue-500/50 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20" title="Restore from backup">
-                  Import
-                  <input
-                    type="file"
-                    accept=".json"
-                    onChange={importData}
-                    className="hidden"
-                  />
-                </label>
-                <button
-                  onClick={clearAllData}
-                  className="bg-slate-800/50 hover:bg-red-900/50 text-blue-100 hover:text-red-100 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all backdrop-blur-sm border border-slate-700 hover:border-red-500/50 hover:scale-105 hover:shadow-lg hover:shadow-red-500/20"
-                  title="Clear all data"
-                >
-                  Clear
-                </button>
               </div>
             </div>
           </div>
