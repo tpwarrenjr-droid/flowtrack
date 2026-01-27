@@ -1,7 +1,10 @@
 import { useState, useMemo, useEffect } from 'react';
 import { DollarSign, Plus, Trash2, Check, Calendar, Wallet } from 'lucide-react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase/config';
+import Auth from './components/Auth';
 
-export default function CashflowTracker() {
+function CashflowTracker({ userId }) {
   const [isLoading, setIsLoading] = useState(true);
   const [lastSaved, setLastSaved] = useState(null);
   const [accounts, setAccounts] = useState([]);
@@ -2222,5 +2225,40 @@ export default function CashflowTracker() {
       </div>
       )}
     </div>
+  );
+}
+
+export default function App() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Auth user={user} />;
+  }
+
+  return (
+    <>
+      <div className="fixed top-4 right-4 z-50">
+        <Auth user={user} />
+      </div>
+      <CashflowTracker userId={user.uid} />
+    </>
   );
 }
