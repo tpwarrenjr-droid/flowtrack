@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword,
-  signOut 
+  signOut,
+  sendPasswordResetEmail
 } from 'firebase/auth';
 import { auth } from '../firebase/config';
 
@@ -12,6 +13,9 @@ export default function Auth({ user }) {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+const [showReset, setShowReset] = useState(false);
+const [resetSent, setResetSent] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,6 +56,20 @@ export default function Auth({ user }) {
       </div>
     );
   }
+const handlePasswordReset = async (e) => {
+  e.preventDefault();
+  setError('');
+  setLoading(true);
+
+  try {
+    await sendPasswordResetEmail(auth, resetEmail);
+    setResetSent(true);
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 flex items-center justify-center p-4">
@@ -120,6 +138,60 @@ export default function Auth({ user }) {
           onClick={() => setIsLogin(!isLogin)}
           className="w-full mt-4 text-blue-400 hover:text-blue-300 text-sm font-medium"
         >
+    {!showReset && (
+  <button
+    onClick={() => setShowReset(true)}
+    className="w-full mt-2 text-slate-400 hover:text-blue-400 text-sm"
+  >
+    Forgot password?
+  </button>
+)}
+
+{showReset && !resetSent && (
+  <div className="mt-4 p-4 bg-slate-800/50 rounded-xl border border-slate-700">
+    <h3 className="text-sm font-semibold text-slate-300 mb-3">Reset Password</h3>
+    <form onSubmit={handlePasswordReset}>
+      <input
+        type="email"
+        value={resetEmail}
+        onChange={(e) => setResetEmail(e.target.value)}
+        required
+        placeholder="Enter your email"
+        className="w-full px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-xl text-slate-200 mb-3"
+      />
+      <div className="flex gap-2">
+        <button
+          type="submit"
+          disabled={loading}
+          className="flex-1 bg-blue-600 text-white py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 disabled:opacity-50"
+        >
+          {loading ? 'Sending...' : 'Send Reset Link'}
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowReset(false)}
+          className="px-4 bg-slate-700 text-slate-300 py-2 rounded-xl text-sm font-semibold hover:bg-slate-600"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+)}
+
+{resetSent && (
+  <div className="mt-4 p-4 bg-emerald-500/20 border border-emerald-500/40 rounded-xl">
+    <p className="text-emerald-200 text-sm">
+      ✅ Password reset email sent! Check your inbox.
+    </p>
+    <button
+      onClick={() => { setResetSent(false); setShowReset(false); }}
+      className="mt-2 text-emerald-400 hover:text-emerald-300 text-sm"
+    >
+      Back to login
+    </button>
+  </div>
+)}
           {isLogin ? "Don't have an account? Sign Up" : 'Already have an account? Sign In'}
         </button>
       </div>
