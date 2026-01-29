@@ -14,7 +14,7 @@ function CashflowTracker({ userId }) {
   const [recurringExpenses, setRecurringExpenses] = useState([]);
   const [recurringIncome, setRecurringIncome] = useState([]);
   
-  const [activeTab, setActiveTab] = useState('Welcome');
+  const [activeTab, setActiveTab] = useState('welcome');
   const [showAddAccount, setShowAddAccount] = useState(false);
   const [showAddExpense, setShowAddExpense] = useState(false);
   const [showAddIncome, setShowAddIncome] = useState(false);
@@ -781,38 +781,38 @@ const projectionsFilteredIncome = useMemo(() => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                  <div className="bg-blue-600/20 backdrop-blur-sm p-6 rounded-2xl shadow-xl transform transition-all hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/30 border border-blue-500/30">
-                    <p className="text-xs text-blue-300 font-bold uppercase tracking-wide">Income in Period</p>
-                    <p className="text-3xl font-bold text-blue-100 mt-2">
-                      {formatCurrency(filteredIncome.reduce((sum, i) => sum + i.amount, 0))}
-                    </p>
-                  </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+  <div className="bg-blue-600/20 backdrop-blur-sm p-4 md:p-6 rounded-2xl shadow-xl transform transition-all hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/30 border border-blue-500/30">
+    <p className="text-xs text-blue-300 font-bold uppercase tracking-wide">Income in Period</p>
+    <p className="text-2xl md:text-3xl font-bold text-blue-100 mt-2">
+      {formatCurrency(filteredIncome.reduce((sum, i) => sum + i.amount, 0))}
+    </p>
+  </div>
 
-                  <div className="bg-emerald-600/20 backdrop-blur-sm p-6 rounded-2xl shadow-xl transform transition-all hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/30 border border-emerald-500/30">
-                    <p className="text-xs text-emerald-300 font-bold uppercase tracking-wide">Paid Expenses</p>
-                    <p className="text-3xl font-bold text-emerald-100 mt-2">
-                      {formatCurrency(filteredExpenses.reduce((sum, e) => sum + e.payments.reduce((s, p) => s + p.amount, 0), 0))}
-                    </p>
-                  </div>
+  <div className="bg-emerald-600/20 backdrop-blur-sm p-4 md:p-6 rounded-2xl shadow-xl transform transition-all hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/30 border border-emerald-500/30">
+    <p className="text-xs text-emerald-300 font-bold uppercase tracking-wide">Paid Expenses</p>
+    <p className="text-2xl md:text-3xl font-bold text-emerald-100 mt-2">
+      {formatCurrency(filteredExpenses.reduce((sum, e) => sum + e.payments.reduce((s, p) => s + p.amount, 0), 0))}
+    </p>
+  </div>
 
-                  <div className="bg-amber-600/20 backdrop-blur-sm p-6 rounded-2xl shadow-xl transform transition-all hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/30 border border-amber-500/30">
-                    <p className="text-xs text-amber-300 font-bold uppercase tracking-wide">Unpaid Expenses</p>
-                    <p className="text-3xl font-bold text-amber-100 mt-2">
-                      {formatCurrency(filteredExpenses.reduce((sum, e) => {
-                        const totalPaid = e.payments.reduce((s, p) => s + p.amount, 0);
-                        return sum + (e.amount - totalPaid);
-                      }, 0))}
-                    </p>
-                  </div>
+  <div className="bg-amber-600/20 backdrop-blur-sm p-4 md:p-6 rounded-2xl shadow-xl transform transition-all hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/30 border border-amber-500/30">
+    <p className="text-xs text-amber-300 font-bold uppercase tracking-wide">Unpaid Expenses</p>
+    <p className="text-2xl md:text-3xl font-bold text-amber-100 mt-2">
+      {formatCurrency(filteredExpenses.reduce((sum, e) => {
+        const totalPaid = e.payments.reduce((s, p) => s + p.amount, 0);
+        return sum + (e.amount - totalPaid);
+      }, 0))}
+    </p>
+  </div>
 
-                  <div className="bg-rose-600/20 backdrop-blur-sm p-6 rounded-2xl shadow-xl transform transition-all hover:scale-105 hover:shadow-2xl hover:shadow-rose-500/30 border border-rose-500/30">
-                    <p className="text-xs text-rose-300 font-bold uppercase tracking-wide">Total Expenses</p>
-                    <p className="text-3xl font-bold text-rose-100 mt-2">
-                      {formatCurrency(filteredExpenses.reduce((sum, e) => sum + e.amount, 0))}
-                    </p>
-                  </div>
-                </div>
+  <div className="bg-rose-600/20 backdrop-blur-sm p-4 md:p-6 rounded-2xl shadow-xl transform transition-all hover:scale-105 hover:shadow-2xl hover:shadow-rose-500/30 border border-rose-500/30">
+    <p className="text-xs text-rose-300 font-bold uppercase tracking-wide">Total Expenses</p>
+    <p className="text-2xl md:text-3xl font-bold text-rose-100 mt-2">
+      {formatCurrency(filteredExpenses.reduce((sum, e) => sum + e.amount, 0))}
+    </p>
+  </div>
+</div>
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg border border-green-200">
@@ -1106,384 +1106,385 @@ const projectionsFilteredIncome = useMemo(() => {
             )}
 
             {activeTab === 'expenses' && (
-              <div>
-               <div className="space-y-4 mb-4">
-  <div className="flex justify-between items-center">
-    <h2 className="text-2xl font-semibold text-slate-100">Expenses</h2>
-    <div className="flex gap-3">
-      <button
-        onClick={() => setShowPaidExpenses(!showPaidExpenses)}
-      className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all border ${
-        showPaidExpenses 
-          ? 'bg-emerald-600/20 text-emerald-100 border-emerald-500/30 hover:bg-emerald-600/30'
-          : 'bg-slate-700/20 text-slate-300 border-slate-600/30 hover:bg-slate-700/30'
-      }`}
-    >
-      <Check className="w-4 h-4" />
-      {showPaidExpenses ? 'Hide Paid' : 'Show Paid (30d)'}
-    </button>
-    <button
-      onClick={() => setShowAddExpense(!showAddExpense)}
-      className="flex items-center gap-2 bg-blue-600/20 backdrop-blur-sm text-blue-100 px-4 py-2 rounded-xl hover:bg-blue-600/30 transition-all border border-blue-500/30"
-    >
-      <Plus className="w-4 h-4" />
-      Add Expense
-    </button>
-  </div>
-  </div>
-  
-  {/* Search Bar */}
-  <div className="relative">
-    <input
-      type="text"
-      placeholder="Search expenses..."
-      value={expenseSearch}
-      onChange={(e) => setExpenseSearch(e.target.value)}
-      className="w-full px-4 py-3 pl-10 bg-slate-800/50 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-    />
-    <svg className="w-5 h-5 absolute left-3 top-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-    </svg>
-  </div>
-</div>
+  <div>
+    <div className="space-y-4 mb-4">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-semibold text-slate-100">Expenses</h2>
+        <div className="flex gap-3">
+          <button
+            onClick={() => setShowPaidExpenses(!showPaidExpenses)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all border ${
+              showPaidExpenses 
+                ? 'bg-emerald-600/20 text-emerald-100 border-emerald-500/30 hover:bg-emerald-600/30'
+                : 'bg-slate-700/20 text-slate-300 border-slate-600/30 hover:bg-slate-700/30'
+            }`}
+          >
+            <Check className="w-4 h-4" />
+            {showPaidExpenses ? 'Hide Paid' : 'Show Paid (30d)'}
+          </button>
+          <button
+            onClick={() => setShowAddExpense(!showAddExpense)}
+            className="flex items-center gap-2 bg-blue-600/20 backdrop-blur-sm text-blue-100 px-4 py-2 rounded-xl hover:bg-blue-600/30 transition-all border border-blue-500/30"
+          >
+            <Plus className="w-4 h-4" />
+            Add Expense
+          </button>
+        </div>
+      </div>
+      
+      {/* Search Bar */}
+      <div className="relative">
+        <input
+          type="text"
+          placeholder="Search expenses..."
+          value={expenseSearch}
+          onChange={(e) => setExpenseSearch(e.target.value)}
+          className="w-full px-4 py-3 pl-10 bg-slate-800/50 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        />
+        <svg className="w-5 h-5 absolute left-3 top-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
+    </div>
 
-                {showAddExpense && (
-                  <div className="bg-gray-50 p-4 rounded-lg mb-4 border border-gray-200">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
-                      <div className="relative">
-  <input
-    type="text"
-    placeholder="Expense name"
-    value={newExpense.name}
-    onChange={(e) => setNewExpense({ ...newExpense, name: e.target.value })}
-    list="expense-names"
-    className="w-full px-3 py-2 border border-gray-300 rounded"
-  />
-  <datalist id="expense-names">
-    {getAllExpenseNames().map(name => (
-      <option key={name} value={name} />
-    ))}
-  </datalist>
-</div>
+    {showAddExpense && (
+      <div className="bg-gray-50 p-4 rounded-lg mb-4 border border-gray-200">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Expense name"
+              value={newExpense.name}
+              onChange={(e) => setNewExpense({ ...newExpense, name: e.target.value })}
+              list="expense-names"
+              className="w-full px-3 py-2 border border-gray-300 rounded"
+            />
+            <datalist id="expense-names">
+              {getAllExpenseNames().map(name => (
+                <option key={name} value={name} />
+              ))}
+            </datalist>
+          </div>
+          <input
+            type="number"
+            placeholder="Amount"
+            value={newExpense.amount}
+            onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
+            className="px-3 py-2 border border-gray-300 rounded"
+          />
+          <input
+            type="date"
+            value={newExpense.dateDue}
+            onChange={(e) => setNewExpense({ ...newExpense, dateDue: e.target.value })}
+            className="px-3 py-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-3">
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={newExpense.isProjected}
+              onChange={(e) => setNewExpense({ ...newExpense, isProjected: e.target.checked })}
+              className="w-4 h-4"
+            />
+            <span className="text-gray-700">Projected Expense (estimate)</span>
+          </label>
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={addExpense}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
+          >
+            Save Expense
+          </button>
+          <button
+            onClick={() => {
+              setShowAddExpense(false);
+              setNewExpense({ name: '', amount: '', dateDue: '', isProjected: false });
+            }}
+            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    )}
+
+    <div className="space-y-3">
+      {(() => {
+        // Get all actual expenses (non-recurring instances from expenses state)
+        const actualExpenses = expenses;
+        
+        // For each active recurring rule, get only the NEXT upcoming instance
+        const nextRecurringInstances = recurringExpenses
+          .filter(r => r.isActive)
+          .map(recurring => {
+            // Find instances for this recurring rule that are in the future
+            const futureInstances = generateRecurringInstances.expenses
+              .filter(inst => 
+                inst.recurringId === recurring.id && 
+                new Date(inst.dateDue) >= new Date()
+              )
+              .sort((a, b) => new Date(a.dateDue) - new Date(b.dateDue));
+            
+            return futureInstances[0]; // Return only the first/next one
+          })
+          .filter(Boolean); // Remove any undefined
+        
+        // Combine all expenses
+        let displayExpenses = [...actualExpenses, ...nextRecurringInstances];
+
+        // Filter by search query
+        if (expenseSearch) {
+          displayExpenses = displayExpenses.filter(exp => 
+            exp.name.toLowerCase().includes(expenseSearch.toLowerCase())
+          );
+        }
+
+        // Filter based on paid status
+        if (!showPaidExpenses) {
+          // Show only unpaid expenses
+          displayExpenses = displayExpenses.filter(exp => {
+            const totalPaid = exp.payments.reduce((sum, p) => sum + p.amount, 0);
+            return totalPaid < exp.amount; // Has unpaid balance
+          });
+        } else {
+          // Show unpaid + paid expenses from last 30 days
+          const thirtyDaysAgo = new Date();
+          thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+          
+          displayExpenses = displayExpenses.filter(exp => {
+            const totalPaid = exp.payments.reduce((sum, p) => sum + p.amount, 0);
+            const isUnpaid = totalPaid < exp.amount;
+            
+            if (isUnpaid) return true; // Always show unpaid
+            
+            // For paid expenses, check if paid in last 30 days
+            const mostRecentPayment = exp.payments.length > 0 
+              ? new Date(Math.max(...exp.payments.map(p => new Date(p.datePaid))))
+              : null;
+            
+            return mostRecentPayment && mostRecentPayment >= thirtyDaysAgo;
+          });
+        }
+        
+        // Sort by date
+        displayExpenses = displayExpenses.sort((a, b) => new Date(a.dateDue) - new Date(b.dateDue));
+        
+        return displayExpenses.map(exp => {
+          const totalPaid = exp.payments.reduce((sum, p) => sum + p.amount, 0);
+          const remaining = exp.amount - totalPaid;
+          const isFullyPaid = remaining <= 0;
+
+          return (
+            <div key={exp.id} className={`p-3 md:p-4 border rounded-lg shadow-sm ${isFullyPaid ? 'bg-gray-50 border-gray-300' : 'bg-white border-gray-200'} ${exp.isRecurringInstance ? 'border-l-4 border-l-purple-400' : ''}`}>
+              {editingExpense === exp.id ? (
+                <div className="space-y-3">
+                  <div className="grid grid-cols-3 gap-3">
+                    <input
+                      type="text"
+                      value={exp.name}
+                      onChange={(e) => updateExpense(exp.id, 'name', e.target.value)}
+                      className="px-3 py-2 border border-gray-300 rounded"
+                    />
+                    <input
+                      type="number"
+                      value={exp.amount}
+                      onChange={(e) => updateExpense(exp.id, 'amount', e.target.value)}
+                      className="px-3 py-2 border border-gray-300 rounded"
+                    />
+                    <input
+                      type="date"
+                      value={exp.dateDue}
+                      onChange={(e) => updateExpense(exp.id, 'dateDue', e.target.value)}
+                      className="px-3 py-2 border border-gray-300 rounded"
+                    />
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <label className="flex items-center gap-2 text-sm">
                       <input
-                        type="number"
-                        placeholder="Amount"
-                        value={newExpense.amount}
-                        onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
-                        className="px-3 py-2 border border-gray-300 rounded"
+                        type="checkbox"
+                        checked={exp.isProjected}
+                        onChange={(e) => updateExpense(exp.id, 'isProjected', e.target.checked)}
+                        className="w-4 h-4"
                       />
-                      <input
-                        type="date"
-                        value={newExpense.dateDue}
-                        onChange={(e) => setNewExpense({ ...newExpense, dateDue: e.target.value })}
-                        className="px-3 py-2 border border-gray-300 rounded"
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label className="flex items-center gap-2 text-sm">
+                      <span className="text-gray-700">Projected</span>
+                    </label>
+                    {exp.recurringId && (
+                      <label className="flex items-center gap-2 text-sm text-purple-700">
                         <input
                           type="checkbox"
-                          checked={newExpense.isProjected}
-                          onChange={(e) => setNewExpense({ ...newExpense, isProjected: e.target.checked })}
+                          checked={applyToFuture}
+                          onChange={(e) => setApplyToFuture(e.target.checked)}
                           className="w-4 h-4"
                         />
-                        <span className="text-gray-700">Projected Expense (estimate)</span>
+                        <span className="font-medium">Apply to all future</span>
                       </label>
-                    </div>
-                    <div className="flex gap-2">
-  <button
-    onClick={addExpense}
-    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
-  >
-    Save Expense
-  </button>
-  <button
-    onClick={() => {
-      setShowAddExpense(false);
-      setNewExpense({ name: '', amount: '', dateDue: '', isProjected: false });
-    }}
-    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
-  >
-    Cancel
-  </button>
-</div>
+                    )}
                   </div>
-                )}
-
-                <div className="space-y-3">
-                  {(() => {
-  // Get all actual expenses (non-recurring instances from expenses state)
-  const actualExpenses = expenses;
-  
-  // For each active recurring rule, get only the NEXT upcoming instance
-  const nextRecurringInstances = recurringExpenses
-    .filter(r => r.isActive)
-    .map(recurring => {
-      // Find instances for this recurring rule that are in the future
-      const futureInstances = generateRecurringInstances.expenses
-        .filter(inst => 
-          inst.recurringId === recurring.id && 
-          new Date(inst.dateDue) >= new Date()
-        )
-        .sort((a, b) => new Date(a.dateDue) - new Date(b.dateDue));
-      
-      return futureInstances[0]; // Return only the first/next one
-    })
-    .filter(Boolean); // Remove any undefined
-  
-  // Combine all expenses
-  // Combine all expenses
-let displayExpenses = [...actualExpenses, ...nextRecurringInstances];
-
-// Filter by search query
-if (expenseSearch) {
-  displayExpenses = displayExpenses.filter(exp => 
-    exp.name.toLowerCase().includes(expenseSearch.toLowerCase())
-  );
-}
-
-// Filter based on paid status
-if (!showPaidExpenses) {
-    // Show only unpaid expenses
-    displayExpenses = displayExpenses.filter(exp => {
-      const totalPaid = exp.payments.reduce((sum, p) => sum + p.amount, 0);
-      return totalPaid < exp.amount; // Has unpaid balance
-    });
-  } else {
-    // Show unpaid + paid expenses from last 30 days
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    
-    displayExpenses = displayExpenses.filter(exp => {
-      const totalPaid = exp.payments.reduce((sum, p) => sum + p.amount, 0);
-      const isUnpaid = totalPaid < exp.amount;
-      
-      if (isUnpaid) return true; // Always show unpaid
-      
-      // For paid expenses, check if paid in last 30 days
-      const mostRecentPayment = exp.payments.length > 0 
-        ? new Date(Math.max(...exp.payments.map(p => new Date(p.datePaid))))
-        : null;
-      
-      return mostRecentPayment && mostRecentPayment >= thirtyDaysAgo;
-    });
-  }
-  
-  // Sort by date
-  displayExpenses = displayExpenses.sort((a, b) => new Date(a.dateDue) - new Date(b.dateDue));
-  
-  return displayExpenses.map(exp => {
-                    const totalPaid = exp.payments.reduce((sum, p) => sum + p.amount, 0);
-                    const remaining = exp.amount - totalPaid;
-                    const isFullyPaid = remaining <= 0;
-
-                    return (
-                      <div key={exp.id} className={`p-4 border rounded-lg shadow-sm ${isFullyPaid ? 'bg-gray-50 border-gray-300' : 'bg-white border-gray-200'} ${exp.isRecurringInstance ? 'border-l-4 border-l-purple-400' : ''}`}>
-                        {editingExpense === exp.id ? (
-                          <div className="space-y-3">
-                            <div className="grid grid-cols-3 gap-3">
-                              <input
-                                type="text"
-                                value={exp.name}
-                                onChange={(e) => updateExpense(exp.id, 'name', e.target.value)}
-                                className="px-3 py-2 border border-gray-300 rounded"
-                              />
-                              <input
-                                type="number"
-                                value={exp.amount}
-                                onChange={(e) => updateExpense(exp.id, 'amount', e.target.value)}
-                                className="px-3 py-2 border border-gray-300 rounded"
-                              />
-                              <input
-                                type="date"
-                                value={exp.dateDue}
-                                onChange={(e) => updateExpense(exp.id, 'dateDue', e.target.value)}
-                                className="px-3 py-2 border border-gray-300 rounded"
-                              />
-                            </div>
-                            <div className="flex items-center gap-4">
-                              <label className="flex items-center gap-2 text-sm">
-                                <input
-                                  type="checkbox"
-                                  checked={exp.isProjected}
-                                  onChange={(e) => updateExpense(exp.id, 'isProjected', e.target.checked)}
-                                  className="w-4 h-4"
-                                />
-                                <span className="text-gray-700">Projected</span>
-                              </label>
-                              {exp.recurringId && (
-                                <label className="flex items-center gap-2 text-sm text-purple-700">
-                                  <input
-                                    type="checkbox"
-                                    checked={applyToFuture}
-                                    onChange={(e) => setApplyToFuture(e.target.checked)}
-                                    className="w-4 h-4"
-                                  />
-                                  <span className="font-medium">Apply to all future</span>
-                                </label>
-                              )}
-                            </div>
-                            <button
-                              onClick={() => { setEditingExpense(null); setApplyToFuture(false); }}
-                              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm"
-                            >
-                              Done
-                            </button>
-                          </div>
-                        ) : (
-                          <>
-                            <div className="flex justify-between items-start mb-3">
-                              <div className="flex-1">
-                                <div className="flex items-center gap-2">
-                                  <h3 className={`font-semibold ${isFullyPaid ? 'text-gray-500' : 'text-gray-800'}`}>
-                                    {exp.name}
-                                  </h3>
-                                  {exp.isProjected && (
-                                    <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded font-medium">
-                                      PROJECTED
-                                    </span>
-                                  )}
-                                  {exp.isRecurringInstance && (
-                                    <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded font-medium">
-                                      RECURRING
-                                    </span>
-                                  )}
-                                </div>
-                                <p className="text-sm text-gray-600 mt-1">
-                                  <Calendar className="w-4 h-4 inline mr-1" />
-                                  Due: {formatDate(exp.dateDue)}
-                                </p>
-                                {isFullyPaid && (
-                                  <p className="text-sm text-green-600 font-medium">
-                                    <Check className="w-4 h-4 inline mr-1" />
-                                    Fully Paid
-                                  </p>
-                                )}
-                              </div>
-                              <div className="flex items-center gap-3">
-                                <div className="text-right">
-                                  <span className={`text-xl font-bold ${isFullyPaid ? 'text-gray-500' : exp.isProjected ? 'text-yellow-600' : 'text-red-600'}`}>
-                                    {formatCurrency(exp.amount)}
-                                  </span>
-                                  {totalPaid > 0 && (
-                                    <div className="text-sm text-green-600">Paid: {formatCurrency(totalPaid)}</div>
-                                  )}
-                                  {remaining > 0 && (
-                                    <div className="text-sm text-orange-600">Remaining: {formatCurrency(remaining)}</div>
-                                  )}
-                                </div>
-                                {exp.isProjected && (
-                                  <button
-                                    onClick={() => actualizeExpense(exp.id)}
-                                    className="text-green-600 hover:text-green-800 text-sm font-medium whitespace-nowrap"
-                                  >
-                                    Actualize
-                                  </button>
-                                )}
-                                <button
-                                  onClick={() => setEditingExpense(exp.id)}
-                                  className="text-blue-500 hover:text-blue-700 text-sm font-medium"
-                                >
-                                  Edit
-                                </button>
-                                <button
-                                  onClick={() => setExpenses(expenses.filter(e => e.id !== exp.id))}
-                                  className="text-red-500 hover:text-red-700"
-                                >
-                                  <Trash2 className="w-5 h-5" />
-                                </button>
-                              </div>
-                            </div>
-
-                            {exp.payments.length > 0 && (
-                              <div className="mt-3 pt-3 border-t border-gray-200">
-                                <h4 className="text-sm font-semibold text-gray-700 mb-2">Payments:</h4>
-                                <div className="space-y-2">
-                                  {exp.payments.map(payment => (
-                                    <div key={payment.id} className="flex justify-between items-center text-sm bg-green-50 p-2 rounded">
-                                      <div>
-                                        <span className="font-medium">{accounts.find(a => a.id === payment.accountId)?.name}</span>
-                                        <span className="text-gray-500 ml-2">{formatDate(payment.datePaid)}</span>
-                                      </div>
-                                      <div className="flex items-center gap-2">
-                                        <span className="text-green-700 font-semibold">{formatCurrency(payment.amount)}</span>
-                                        <button
-                                          onClick={() => deletePayment(exp.id, payment.id)}
-                                          className="text-red-500 hover:text-red-700"
-                                        >
-                                          <Trash2 className="w-4 h-4" />
-                                        </button>
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-
-                            {remaining > 0 && (
-                              <div className="mt-3">
-                                {showPaymentModal === exp.id ? (
-                                  <div className="bg-blue-50 p-3 rounded border border-blue-200">
-                                    <div className="grid grid-cols-3 gap-2 mb-2">
-                                      <input
-                                        type="number"
-                                        placeholder="Amount"
-                                        value={newPayment.amount}
-                                        max={remaining}
-                                        onChange={(e) => setNewPayment({ ...newPayment, amount: e.target.value })}
-                                        className="px-3 py-2 border border-gray-300 rounded text-sm"
-                                      />
-                                      <select
-                                        value={newPayment.accountId}
-                                        onChange={(e) => setNewPayment({ ...newPayment, accountId: e.target.value })}
-                                        className="px-3 py-2 border border-gray-300 rounded text-sm"
-                                      >
-                                        <option value="">Select Account</option>
-                                        {accounts.map(acc => (
-                                          <option key={acc.id} value={acc.id}>{acc.name}</option>
-                                        ))}
-                                      </select>
-                                      <input
-                                        type="date"
-                                        value={newPayment.datePaid}
-                                        onChange={(e) => setNewPayment({ ...newPayment, datePaid: e.target.value })}
-                                        className="px-3 py-2 border border-gray-300 rounded text-sm"
-                                      />
-                                    </div>
-                                    <div className="flex gap-2">
-                                      <button
-                                        onClick={() => addPaymentToExpense(exp.id)}
-                                        className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
-                                      >
-                                        Add Payment
-                                      </button>
-                                      <button
-                                        onClick={() => setShowPaymentModal(null)}
-                                        className="bg-gray-500 text-white px-3 py-1 rounded text-sm hover:bg-gray-600"
-                                      >
-                                        Cancel
-                                      </button>
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <button
-                                    onClick={() => setShowPaymentModal(exp.id)}
-                                    className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                                  >
-                                    + Add Payment
-                                  </button>
-                                )}
-                              </div>
-                            )}
-                          </>
+                  <button
+                    onClick={() => { setEditingExpense(null); setApplyToFuture(false); }}
+                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm"
+                  >
+                    Done
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-3">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className={`font-semibold ${isFullyPaid ? 'text-gray-500' : 'text-gray-800'}`}>
+                          {exp.name}
+                        </h3>
+                        {exp.isProjected && (
+                          <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded font-medium">
+                            PROJECTED
+                          </span>
+                        )}
+                        {exp.isRecurringInstance && (
+                          <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded font-medium">
+                            RECURRING
+                          </span>
                         )}
                       </div>
-                    );
-                  });
-                })()}
-                </div>
-              </div>
-            )}
+                      <p className="text-sm text-gray-600 mt-1">
+                        <Calendar className="w-4 h-4 inline mr-1" />
+                        Due: {formatDate(exp.dateDue)}
+                      </p>
+                      {isFullyPaid && (
+                        <p className="text-sm text-green-600 font-medium">
+                          <Check className="w-4 h-4 inline mr-1" />
+                          Fully Paid
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
+                      <div className="text-left sm:text-right">
+                        <span className={`text-lg md:text-xl font-bold ${isFullyPaid ? 'text-gray-500' : exp.isProjected ? 'text-yellow-600' : 'text-red-600'}`}>
+                          {formatCurrency(exp.amount)}
+                        </span>
+                        {totalPaid > 0 && (
+                          <div className="text-sm text-green-600">Paid: {formatCurrency(totalPaid)}</div>
+                        )}
+                        {remaining > 0 && (
+                          <div className="text-sm text-orange-600">Remaining: {formatCurrency(remaining)}</div>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {exp.isProjected && (
+                          <button
+                            onClick={() => actualizeExpense(exp.id)}
+                            className="text-green-600 hover:text-green-800 text-sm font-medium whitespace-nowrap"
+                          >
+                            Actualize
+                          </button>
+                        )}
+                        <button
+                          onClick={() => setEditingExpense(exp.id)}
+                          className="text-blue-500 hover:text-blue-700 text-sm font-medium"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => setExpenses(expenses.filter(e => e.id !== exp.id))}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <Trash2 className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {exp.payments.length > 0 && (
+                    <div className="mt-3 pt-3 border-t border-gray-200">
+                      <h4 className="text-sm font-semibold text-gray-700 mb-2">Payments:</h4>
+                      <div className="space-y-2">
+                        {exp.payments.map(payment => (
+                          <div key={payment.id} className="flex justify-between items-center text-sm bg-green-50 p-2 rounded">
+                            <div>
+                              <span className="font-medium">{accounts.find(a => a.id === payment.accountId)?.name}</span>
+                              <span className="text-gray-500 ml-2">{formatDate(payment.datePaid)}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-green-700 font-semibold">{formatCurrency(payment.amount)}</span>
+                              <button
+                                onClick={() => deletePayment(exp.id, payment.id)}
+                                className="text-red-500 hover:text-red-700"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {remaining > 0 && (
+                    <div className="mt-3">
+                      {showPaymentModal === exp.id ? (
+                        <div className="bg-blue-50 p-3 rounded border border-blue-200">
+                          <div className="grid grid-cols-3 gap-2 mb-2">
+                            <input
+                              type="number"
+                              placeholder="Amount"
+                              value={newPayment.amount}
+                              max={remaining}
+                              onChange={(e) => setNewPayment({ ...newPayment, amount: e.target.value })}
+                              className="px-3 py-2 border border-gray-300 rounded text-sm"
+                            />
+                            <select
+                              value={newPayment.accountId}
+                              onChange={(e) => setNewPayment({ ...newPayment, accountId: e.target.value })}
+                              className="px-3 py-2 border border-gray-300 rounded text-sm"
+                            >
+                              <option value="">Select Account</option>
+                              {accounts.map(acc => (
+                                <option key={acc.id} value={acc.id}>{acc.name}</option>
+                              ))}
+                            </select>
+                            <input
+                              type="date"
+                              value={newPayment.datePaid}
+                              onChange={(e) => setNewPayment({ ...newPayment, datePaid: e.target.value })}
+                              className="px-3 py-2 border border-gray-300 rounded text-sm"
+                            />
+                          </div>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => addPaymentToExpense(exp.id)}
+                              className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
+                            >
+                              Add Payment
+                            </button>
+                            <button
+                              onClick={() => setShowPaymentModal(null)}
+                              className="bg-gray-500 text-white px-3 py-1 rounded text-sm hover:bg-gray-600"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => setShowPaymentModal(exp.id)}
+                          className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                        >
+                          + Add Payment
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          );
+        });
+      })()}
+    </div>
+  </div>
+)}
 
             {activeTab === 'income' && (
               <div>
@@ -1586,9 +1587,9 @@ if (!showPaidExpenses) {
     .sort((a, b) => new Date(a.dateExpected) - new Date(b.dateExpected));
   
   return displayIncome.map(inc => (
-                    <div key={inc.id} className={`flex justify-between items-center p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow ${inc.isRecurringInstance ? 'border-l-4 border-l-purple-400' : ''}`}>
-                      <div>
-                        <div className="flex items-center gap-2">
+                    <div key={inc.id} className={`flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 p-3 md:p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow ${inc.isRecurringInstance ? 'border-l-4 border-l-purple-400' : ''}`}>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <h3 className="font-semibold text-gray-800">{inc.name}</h3>
                           {inc.isRecurringInstance && (
                             <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded font-medium">
@@ -1596,7 +1597,7 @@ if (!showPaidExpenses) {
                             </span>
                           )}
                         </div>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-600 mt-1">
                           <Calendar className="w-4 h-4 inline mr-1" />
                           Expected: {formatDate(inc.dateExpected)}
                         </p>
@@ -1604,8 +1605,8 @@ if (!showPaidExpenses) {
                           To: {accounts.find(a => a.id === inc.accountId)?.name}
                         </p>
                       </div>
-                      <div className="flex items-center gap-4">
-                        <span className="text-xl font-bold text-green-600">{formatCurrency(inc.amount)}</span>
+                      <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4">
+                        <span className="text-lg md:text-xl font-bold text-green-600">{formatCurrency(inc.amount)}</span>
                         <button
                           onClick={() => setIncome(income.filter(i => i.id !== inc.id))}
                           className="text-red-500 hover:text-red-700 transition-colors"
@@ -1742,30 +1743,32 @@ if (!showPaidExpenses) {
                             </button>
                           </div>
                         ) : (
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <h3 className={`font-semibold ${rec.isActive ? 'text-gray-800' : 'text-gray-500'}`}>{rec.name}</h3>
-                                <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">{rec.frequency.toUpperCase()}</span>
-                                {rec.isProjected && <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">PROJECTED</span>}
-                                {!rec.isActive && <span className="text-xs bg-gray-300 text-gray-700 px-2 py-1 rounded">INACTIVE</span>}
-                              </div>
-                              <p className="text-sm text-gray-600 mt-1">Starts: {formatDate(rec.startDate)}</p>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <span className={`text-xl font-bold ${rec.isActive ? 'text-red-600' : 'text-gray-500'}`}>{formatCurrency(rec.amount)}</span>
-                              <button
-                                onClick={() => setRecurringExpenses(recurringExpenses.map(r => r.id === rec.id ? { ...r, isActive: !r.isActive } : r))}
-                                className={`px-3 py-1 rounded text-sm ${rec.isActive ? 'bg-orange-100 text-orange-700' : 'bg-green-100 text-green-700'}`}
-                              >
-                                {rec.isActive ? 'Pause' : 'Activate'}
-                              </button>
-                              <button onClick={() => setEditingRecurringExpense(rec.id)} className="text-blue-500 hover:text-blue-700 text-sm">Edit</button>
-                              <button onClick={() => setRecurringExpenses(recurringExpenses.filter(r => r.id !== rec.id))} className="text-red-500 hover:text-red-700">
-                                <Trash2 className="w-5 h-5" />
-                              </button>
-                            </div>
-                          </div>
+                          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+  <div className="flex-1">
+    <div className="flex items-center gap-2 flex-wrap">
+      <h3 className={`font-semibold ${rec.isActive ? 'text-gray-800' : 'text-gray-500'}`}>{rec.name}</h3>
+      <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">{rec.frequency.toUpperCase()}</span>
+      {rec.isProjected && <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">PROJECTED</span>}
+      {!rec.isActive && <span className="text-xs bg-gray-300 text-gray-700 px-2 py-1 rounded">INACTIVE</span>}
+    </div>
+    <p className="text-sm text-gray-600 mt-1">Starts: {formatDate(rec.startDate)}</p>
+  </div>
+  <div className="flex items-center justify-between md:justify-end gap-3 flex-wrap">
+    <span className={`text-lg md:text-xl font-bold ${rec.isActive ? 'text-red-600' : 'text-gray-500'}`}>{formatCurrency(rec.amount)}</span>
+    <div className="flex items-center gap-2">
+      <button
+        onClick={() => setRecurringExpenses(recurringExpenses.map(r => r.id === rec.id ? { ...r, isActive: !r.isActive } : r))}
+        className={`px-3 py-1 rounded text-sm ${rec.isActive ? 'bg-orange-100 text-orange-700' : 'bg-green-100 text-green-700'}`}
+      >
+        {rec.isActive ? 'Pause' : 'Activate'}
+      </button>
+      <button onClick={() => setEditingRecurringExpense(rec.id)} className="text-blue-500 hover:text-blue-700 text-sm">Edit</button>
+      <button onClick={() => setRecurringExpenses(recurringExpenses.filter(r => r.id !== rec.id))} className="text-red-500 hover:text-red-700">
+        <Trash2 className="w-5 h-5" />
+      </button>
+    </div>
+  </div>
+</div>
                         )}
                       </div>
                     ))}
@@ -1902,29 +1905,31 @@ if (!showPaidExpenses) {
                             </button>
                           </div>
                         ) : (
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <h3 className={`font-semibold ${rec.isActive ? 'text-gray-800' : 'text-gray-500'}`}>{rec.name}</h3>
-                                <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">{rec.frequency.toUpperCase()}</span>
-                                {!rec.isActive && <span className="text-xs bg-gray-300 text-gray-700 px-2 py-1 rounded">INACTIVE</span>}
-                              </div>
-                              <p className="text-sm text-gray-600 mt-1">Starts: {formatDate(rec.startDate)} • To: {accounts.find(a => a.id === rec.accountId)?.name}</p>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <span className={`text-xl font-bold ${rec.isActive ? 'text-green-600' : 'text-gray-500'}`}>{formatCurrency(rec.amount)}</span>
-                              <button
-                                onClick={() => setRecurringIncome(recurringIncome.map(r => r.id === rec.id ? { ...r, isActive: !r.isActive } : r))}
-                                className={`px-3 py-1 rounded text-sm ${rec.isActive ? 'bg-orange-100 text-orange-700' : 'bg-green-100 text-green-700'}`}
-                              >
-                                {rec.isActive ? 'Pause' : 'Activate'}
-                              </button>
-                              <button onClick={() => setEditingRecurringIncome(rec.id)} className="text-blue-500 hover:text-blue-700 text-sm">Edit</button>
-                              <button onClick={() => setRecurringIncome(recurringIncome.filter(r => r.id !== rec.id))} className="text-red-500 hover:text-red-700">
-                                <Trash2 className="w-5 h-5" />
-                              </button>
-                            </div>
-                          </div>
+                          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+  <div className="flex-1">
+    <div className="flex items-center gap-2 flex-wrap">
+      <h3 className={`font-semibold ${rec.isActive ? 'text-gray-800' : 'text-gray-500'}`}>{rec.name}</h3>
+      <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">{rec.frequency.toUpperCase()}</span>
+      {!rec.isActive && <span className="text-xs bg-gray-300 text-gray-700 px-2 py-1 rounded">INACTIVE</span>}
+    </div>
+    <p className="text-sm text-gray-600 mt-1">Starts: {formatDate(rec.startDate)} • To: {accounts.find(a => a.id === rec.accountId)?.name}</p>
+  </div>
+  <div className="flex items-center justify-between md:justify-end gap-3 flex-wrap">
+    <span className={`text-lg md:text-xl font-bold ${rec.isActive ? 'text-green-600' : 'text-gray-500'}`}>{formatCurrency(rec.amount)}</span>
+    <div className="flex items-center gap-2">
+      <button
+        onClick={() => setRecurringIncome(recurringIncome.map(r => r.id === rec.id ? { ...r, isActive: !r.isActive } : r))}
+        className={`px-3 py-1 rounded text-sm ${rec.isActive ? 'bg-orange-100 text-orange-700' : 'bg-green-100 text-green-700'}`}
+      >
+        {rec.isActive ? 'Pause' : 'Activate'}
+      </button>
+      <button onClick={() => setEditingRecurringIncome(rec.id)} className="text-blue-500 hover:text-blue-700 text-sm">Edit</button>
+      <button onClick={() => setRecurringIncome(recurringIncome.filter(r => r.id !== rec.id))} className="text-red-500 hover:text-red-700">
+        <Trash2 className="w-5 h-5" />
+      </button>
+    </div>
+  </div>
+</div>
                         )}
                       </div>
                     ))}
@@ -2053,7 +2058,7 @@ if (!showPaidExpenses) {
                             <div
                               key={idx}
                               onClick={() => setSelectedCalendarDay(day)}
-                              className={`aspect-square border rounded-xl p-2 transition-all cursor-pointer ${
+                              className={`aspect-square border rounded-xl p-1 sm:p-2 transition-all cursor-pointer ${
                                 isSelected
                                   ? 'border-blue-400 bg-blue-500/20 ring-2 ring-blue-400/50'
                                   : isToday 
@@ -2061,14 +2066,14 @@ if (!showPaidExpenses) {
                                   : 'border-slate-700/50 bg-slate-900/50 hover:bg-slate-800/50 hover:border-slate-600'
                               }`}
                             >
-                              <div className={`text-sm font-semibold mb-1 ${isSelected ? 'text-blue-300' : isToday ? 'text-blue-300' : 'text-slate-300'}`}>
+                              <div className={`text-xs sm:text-sm font-semibold mb-1 ${isSelected ? 'text-blue-300' : isToday ? 'text-blue-300' : 'text-slate-300'}`}>
                                 {day}
                               </div>
-                              <div className="space-y-1 overflow-y-auto max-h-20">
+                              <div className="space-y-0.5 sm:space-y-1 overflow-y-auto max-h-12 sm:max-h-20">
                                 {dayIncome.map((inc, i) => (
                                   <div
                                     key={`inc-${i}`}
-                                    className="text-xs px-1 py-0.5 bg-emerald-500/20 text-emerald-300 rounded border border-emerald-500/30 truncate"
+                                    className="text-[10px] sm:text-xs px-1 py-0.5 bg-emerald-500/20 text-emerald-300 rounded border border-emerald-500/30 truncate"
                                   >
                                     {inc.name}
                                   </div>
@@ -2079,7 +2084,7 @@ if (!showPaidExpenses) {
                                   return (
                                     <div
                                       key={`exp-${i}`}
-                                      className={`text-xs px-1 py-0.5 rounded border truncate ${
+                                      className={`text-[10px] sm:text-xs px-1 py-0.5 rounded border truncate ${
                                         isPaid
                                           ? 'bg-slate-600/20 text-slate-400 border-slate-600/30'
                                           : exp.isProjected
@@ -2593,67 +2598,130 @@ const filteredExpenses = selectedExpenses.length === 0
 
           {/* Expense Breakdown Table */}
           {filteredExpenses.length > 0 ? (
-            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 border-b border-gray-200">
-               <div className="grid grid-cols-5 gap-4 text-sm font-semibold text-gray-700">
-  <div>Expense</div>
-  <div className="text-right">Total Paid</div>
-  <div className="text-right">Avg/Month</div>
-  <div className="text-right">Avg Projected/Mo</div>
-  <div className="text-right">% of Total</div>
-</div>
+  <>
+    {/* Desktop Table View - Hidden on Mobile */}
+    <div className="hidden md:block bg-white rounded-2xl border border-gray-200 overflow-hidden">
+      <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 border-b border-gray-200">
+        <div className="grid grid-cols-5 gap-4 text-sm font-semibold text-gray-700">
+          <div>Expense</div>
+          <div className="text-right">Total Paid</div>
+          <div className="text-right">Avg/Month</div>
+          <div className="text-right">Avg Projected/Mo</div>
+          <div className="text-right">% of Total</div>
+        </div>
+      </div>
+      <div className="divide-y divide-gray-100">
+        {filteredExpenses.map((exp, idx) => {
+          const avgPerMonth = exp.total / actualMonthsWithData;
+          const percentage = (exp.total / grandTotal) * 100;
+          
+          return (
+            <div 
+              key={idx}
+              className="grid grid-cols-5 gap-4 p-4 hover:bg-gray-50 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                  {idx + 1}
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-800">{exp.name}</p>
+                  {exp.isRecurring && (
+                    <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded">Recurring</span>
+                  )}
+                </div>
               </div>
-              <div className="divide-y divide-gray-100">
-                {filteredExpenses.map((exp, idx) => {
-                  const avgPerMonth = exp.total / actualMonthsWithData;
-                  const percentage = (exp.total / grandTotal) * 100;
-                  
-                  return (
-                    <div 
-  key={idx}
-  className="grid grid-cols-5 gap-4 p-4 hover:bg-gray-50 transition-colors"
->
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                          {idx + 1}
-                        </div>
-                        <div>
-                          <p className="font-semibold text-gray-800">{exp.name}</p>
-                          {exp.isRecurring && (
-                            <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded">Recurring</span>
-                          )}
-                        </div>
-                      </div>
-                      <div className="text-right font-bold text-gray-800 flex items-center justify-end">
-                        {formatCurrency(exp.total)}
-                      </div>
-                      <div className="text-right font-semibold text-blue-600 flex items-center justify-end">
-  {formatCurrency(avgPerMonth)}
-</div>
-<div className="text-right font-semibold text-yellow-600 flex items-center justify-end">
-  {formatCurrency(exp.projected / actualMonthsWithData)}
-</div>
-<div className="text-right flex items-center justify-end">
-                        <div className="w-full max-w-[120px]">
-                          <div className="flex items-center gap-2">
-                            <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                              <div 
-                                className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
-                                style={{ width: `${percentage}%` }}
-                              ></div>
-                            </div>
-                            <span className="text-sm font-medium text-gray-700 w-12 text-right">
-                              {percentage.toFixed(0)}%
-                            </span>
-                          </div>
-                        </div>
-                      </div>
+              <div className="text-right font-bold text-gray-800 flex items-center justify-end">
+                {formatCurrency(exp.total)}
+              </div>
+              <div className="text-right font-semibold text-blue-600 flex items-center justify-end">
+                {formatCurrency(avgPerMonth)}
+              </div>
+              <div className="text-right font-semibold text-yellow-600 flex items-center justify-end">
+                {formatCurrency(exp.projected / actualMonthsWithData)}
+              </div>
+              <div className="text-right flex items-center justify-end">
+                <div className="w-full max-w-[120px]">
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+                        style={{ width: `${percentage}%` }}
+                      ></div>
                     </div>
-                  );
-                })}
+                    <span className="text-sm font-medium text-gray-700 w-12 text-right">
+                      {percentage.toFixed(0)}%
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-          ) : (
+          );
+        })}
+      </div>
+    </div>
+
+    {/* Mobile Card View - Hidden on Desktop */}
+    <div className="md:hidden space-y-4">
+      {filteredExpenses.map((exp, idx) => {
+        const avgPerMonth = exp.total / actualMonthsWithData;
+        const percentage = (exp.total / grandTotal) * 100;
+        
+        return (
+          <div key={idx} className="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm">
+            {/* Header with rank and name */}
+            <div className="flex items-center gap-3 mb-4 pb-3 border-b border-gray-100">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+                {idx + 1}
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-gray-800 text-lg">{exp.name}</h3>
+                {exp.isRecurring && (
+                  <span className="inline-block mt-1 text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Recurring</span>
+                )}
+              </div>
+            </div>
+
+            {/* Stats Grid */}
+            <div className="space-y-3">
+              {/* Total Paid */}
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600 font-medium">Total Paid</span>
+                <span className="text-xl font-bold text-gray-800">{formatCurrency(exp.total)}</span>
+              </div>
+
+              {/* Avg per Month */}
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600 font-medium">Avg/Month</span>
+                <span className="text-lg font-semibold text-blue-600">{formatCurrency(avgPerMonth)}</span>
+              </div>
+
+              {/* Avg Projected */}
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600 font-medium">Avg Projected/Mo</span>
+                <span className="text-lg font-semibold text-yellow-600">{formatCurrency(exp.projected / actualMonthsWithData)}</span>
+              </div>
+
+              {/* Percentage bar */}
+              <div className="pt-2">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-gray-600 font-medium">% of Total</span>
+                  <span className="text-lg font-bold text-gray-800">{percentage.toFixed(0)}%</span>
+                </div>
+                <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-500"
+                    style={{ width: `${percentage}%` }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </>
+) : (
             <div className="bg-slate-800/50 backdrop-blur-sm p-12 rounded-2xl border border-slate-700/50 text-center">
               <p className="text-slate-400 text-lg">No expense data for this period</p>
               <p className="text-slate-500 text-sm mt-2">Start tracking payments to see analytics</p>
